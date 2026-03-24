@@ -1,0 +1,54 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "Stores user profile information and role.",
+      "type": "object",
+      "properties": {
+        "fullName": { "type": "string" },
+        "officeName": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "role": { "type": "string", "enum": ["admin", "user"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["email", "role"]
+    },
+    "Project": {
+      "title": "Project Case",
+      "description": "Represents a legal/accounting case for a debtor.",
+      "type": "object",
+      "properties": {
+        "fullName": { "type": "string" },
+        "afm": { "type": "string" },
+        "ocwNumber": { "type": "string" },
+        "date": { "type": "string" },
+        "ownerUid": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["fullName", "ownerUid"]
+    },
+    "Admin": {
+      "title": "Admin Access",
+      "description": "Stores manual admin access status.",
+      "type": "object",
+      "properties": {
+        "status": { "type": "string", "enum": ["active", "inactive"] }
+      },
+      "required": ["status"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profile documents."
+    },
+    "/projects/{projectId}": {
+      "schema": "Project",
+      "description": "Project cases created by users."
+    },
+    "/Admin/{userId}": {
+      "schema": "Admin",
+      "description": "Manual admin access control."
+    }
+  }
+}
