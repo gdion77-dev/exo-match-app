@@ -1,9 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-body {
-  background-color: #050b18;
-  color: #e2e8f0;
-  font-family: sans-serif;
+@layer base {
+  body {
+    @apply bg-[#050b18] text-slate-200 font-sans antialiased;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-sans;
+  }
+}
+
+.glass-card {
+  @apply bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl;
+}
+
+.glass-card-light {
+  @apply bg-white/80 backdrop-blur-xl border border-slate-200 shadow-xl;
+}
+
+.glass-nav {
+  @apply bg-[#050b18]/80 backdrop-blur-lg border-b border-white/5;
+}
+
+.glass-nav-light {
+  @apply bg-white/80 backdrop-blur-lg border-b border-slate-200;
+}
+
+.glow-teal {
+  box-shadow: 0 0 40px -10px rgba(91, 164, 177, 0.3);
+}
+
+.text-glow-teal {
+  text-shadow: 0 0 20px rgba(91, 164, 177, 0.5);
 }
