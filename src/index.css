@@ -1,21 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 body {
-background-color: #050b18;
-color: #e2e8f0;
-font-family: sans-serif;
-}
-
-.glass-card {
-background-color: rgba(255, 255, 255, 0.05);
-backdrop-filter: blur(20px);
-border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.glass-nav {
-background-color: rgba(5, 11, 24, 0.8);
-backdrop-filter: blur(12px);
-border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.glow-teal {
-box-shadow: 0 0 40px -10px rgba(91, 164, 177, 0.3);
+  background-color: #050b18;
+  color: #e2e8f0;
+  font-family: sans-serif;
 }
