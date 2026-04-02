@@ -3,7 +3,7 @@ import * as XLSX from 'xlsx';
 import { AlertTriangle, Lock, Printer, Trash2, FileSpreadsheet, Plus, FolderOpen, ChevronLeft, LayoutDashboard, Settings, X, LogOut, CreditCard, Loader2, KeyRound, Globe, Info, Landmark, Building, Unlink, ShieldCheck, ChevronRight, CheckCircle2, Scale, ArrowLeft, BookOpen, FileUp, Wand2, FileDown, Check, Phone, Mail, MapPin, Link2, Car, Wallet, AlertCircle, Zap, XCircle } from 'lucide-react';
 import { motion } from 'motion/react';
 import { Asset, FundAsset, Collateral, SingularizedAsset, FinancialAsset } from './types';
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail, updatePassword, sendEmailVerification, GoogleAuthProvider, OAuthProvider, signInWithPopup } from "firebase/auth";
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail, updatePassword, sendEmailVerification, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { collection, query, where, onSnapshot, doc, setDoc, getDoc, deleteDoc, updateDoc } from "firebase/firestore";
 import { auth, db } from './firebase';
 
@@ -229,7 +229,7 @@ const MotionIntro = ({ onComplete }: { onComplete: () => void }) => {
 };
 
 const translations = {
-  EL: { dashboard: "Πινακας Ελεγχου", settings: "Ρυθμισεις", subscription: "Συνδρομη", tutorial: "Οδηγος Χρησης", activeProject: "Ενεργος Φακελος", clearData: "Καθαρισμος", printReport: "Εκτυπωση", uploadAsset: "Ανεβασμα Ε9 (Ακινητα)", uploadAssetDesc: "\"Ακινητα\" / PropertytaxbuildingsXLS", uploadClaim: "Ανεβασμα Βαρων", uploadClaimDesc: "\"Περιουσιακα Στοιχεια - Πιστωτες\" / assetsXLS", uploadCollateral: "Ανεβασμα Προσημειωσεων", uploadCollateralDesc: "\"Εξασφαλισεις - Πιστωτες\" / CollateralXLS", orphanEncumbrances: "Ορφανα Βαρη", orphanDesc: "Βαρη που δεν ταυτιστηκαν με ακινητα.", noOrphans: "Δεν εντοπιστηκαν ορφανα βαρη", totalLiq: "Συνολικη Αξια", uniqueAssets: "Μοναδικα Ακινητα", resultsList: "Λιστα Αποτελεσματων", resultSingularized: "Μοναδικοποιημενα", matchId: "Match ID", description: "Περιγραφη", liqValue: "Αξια Ρευστ.", status: "Κατασταση", claims: "Εξασφαλισεις / Βαρη", claimType: "Βαρος", myCases: "Φακελοι Πελατων", newCase: "Νεος Φακελος", emptyWorkspace: "Ο χωρος εργασιας ειναι αδειος", emptyDesc: "Ξεκινιστε πατωντας το κουμπι 'Νεος Φακελος'.", clickForDetails: "Κλικ για αναλυση", liqAnalysis: "Αναλυση Αξιας", uniqueAssetsList: "Μοναδικα Ακινητα", orphanList: "Ορφανα Βαρη", creditor: "Επωνυμια Πιστωτη / Διαχειριστη", amount: "Ποσο", close: "Κλεισιμο", total: "Συνολο:" }
+  EL: { dashboard: "Πινακας Ελεγχου", settings: "Ρυθμισεις", subscription: "Συνδρομη", tutorial: "Οδηγος Χρησης", activeProject: "Ενεργος Φακελος", clearData: "Καθαρισμος", printReport: "Εκτυπωση", uploadAsset: "Ανεβασμα Ε9 (Ακινητα)", uploadAssetDesc: "\"Ακινητα\" / PropertytaxbuildingsXLS", uploadClaim: "Ανεβασμα Βαρων", uploadClaimDesc: "\"Περιουσιακα Στοιχεια - Πιστωτες\" / assetsXLS", uploadCollateral: "Ανεβασμα Προσημειωσεων", uploadCollateralDesc: "\"Εξασφαλισεις - Πιστωτες\" / CollateralXLS", orphanEncumbrances: "Ορφανα Βαρη", orphanDesc: "Βαρη που δεν ταυτιστηκαν με ακινητα.", noOrphans: "Δεν εντοπιστηκαν ορφανα βαρη", totalLiq: "Συνολικη Αξια", uniqueAssets: "Μοναδικα Ακινητα", resultsList: "Λιστα Αποτελεσματων", resultSingularized: "Μοναδικοποιημενα", matchId: "Match ID", description: "Περιγραφη", liqValue: "Αξια Ρευστ.", status: "Κατασταση", claims: "Εξασφαλισεις / Βαρη", claimType: "Βαρος", myCases: "Φακελοι Πελατων", newCase: "Νεος Φακελος", emptyWorkspace: "Ο χωρος εργασιας ειναι αδειος", emptyDesc: "Ξεκινήστε πατωντας το κουμπι 'Νεος Φακελος'.", clickForDetails: "Κλικ για αναλυση", liqAnalysis: "Αναλυση Αξιας", uniqueAssetsList: "Μοναδικα Ακινητα", orphanList: "Ορφανα Βαρη", creditor: "Επωνυμια Πιστωτη / Διαχειριστη", amount: "Ποσο", close: "Κλεισιμο", total: "Συνολο:" }
 };
 
 const removeGreekAccents = (str: string) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
@@ -333,6 +333,13 @@ export default function App() {
   const [registerConfirmPassword, setRegisterConfirmPassword] = useState('');
   const [registerFullName, setRegisterFullName] = useState('');
   const [registerOfficeName, setRegisterOfficeName] = useState('');
+  const [registerProfession, setRegisterProfession] = useState('');
+  const [registerPhone, setRegisterPhone] = useState('');
+  const [registerAfm, setRegisterAfm] = useState('');
+  const [requireInvoice, setRequireInvoice] = useState(false);
+  const [registerAddress, setRegisterAddress] = useState('');
+  const [registerDoy, setRegisterDoy] = useState('');
+  const [isFetchingAfm, setIsFetchingAfm] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [isLoggingIn, setIsLoggingIn] = useState(false); const [loginError, setLoginError] = useState('');
   const [currentUser, setCurrentUser] = useState<string | null>(null);
@@ -340,6 +347,7 @@ export default function App() {
   const [userPlan, setUserPlan] = useState<'BASIC' | 'PRO'>('BASIC');
   const [usageCount, setUsageCount] = useState<number>(0);
   const [isCreatingCase, setIsCreatingCase] = useState(false);
+  const [createError, setCreateError] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
 
   const [resetEmail, setResetEmail] = useState(''); const [isResetting, setIsResetting] = useState(false);
@@ -410,43 +418,54 @@ export default function App() {
   const [listA, setListA] = useState<Asset[]>([]); const [listB, setListB] = useState<FundAsset[]>([]); const [listC, setListC] = useState<Collateral[]>([]); const [listD, setListD] = useState<FinancialAsset[]>([]);
   const [newPassword, setNewPassword] = useState(''); const [confirmPassword, setConfirmPassword] = useState('');
   const [settingsMessage, setSettingsMessage] = useState<{type: 'success' | 'error', text: string} | null>(null);
+  const stripeSubUnsubscribe = useRef<(() => void) | null>(null);
+  const [saveStatus, setSaveStatus] = useState<'SAVED' | 'SAVING' | 'ERROR'>('SAVED');
+
+  const checkUserAccess = async (user: any) => {
+    setCurrentUser(user.email);
+    if (!user.emailVerified && user.email !== 'info@bizboost.gr' && user.email !== 'gdion77@gmail.com') { setAuthStatus('UNVERIFIED_EMAIL'); return; }
+    if (user.email === 'info@bizboost.gr' || user.email === 'gdion77@gmail.com') { setAuthStatus('AUTHORIZED'); setUserPlan('PRO'); return; }
+    
+    // 1. Check Admin collection first
+    try {
+      const adminDoc = await getDoc(doc(db, 'Admin', user.uid));
+      if (adminDoc.exists() && adminDoc.data().status === 'active') {
+        setAuthStatus('AUTHORIZED');
+        setUserPlan('PRO');
+        return; // Bypass Stripe check
+      }
+    } catch (e) {
+      console.log("Admin check err", e);
+    }
+
+    // 2. Proceed to Stripe check if not admin
+    const subRef = collection(db, 'customers', user.uid, 'subscriptions');
+    const q = query(subRef, where('status', 'in', ['tracking', 'active', 'trialing']));
+    
+    if (stripeSubUnsubscribe.current) {
+      stripeSubUnsubscribe.current();
+    }
+    
+    stripeSubUnsubscribe.current = onSnapshot(q, (snapshot) => {
+      if (!snapshot.empty) {
+        setAuthStatus('AUTHORIZED');
+        const subData = snapshot.docs[0].data();
+        setUserPlan((subData.role || 'basic').toLowerCase() === 'pro' ? 'PRO' : 'BASIC');
+      } else { setAuthStatus('PAYWALL'); }
+    });
+    try {
+      const usageDocRef = doc(db, 'user_usage', user.uid);
+      const usageSnap = await getDoc(usageDocRef);
+      const currentMonthStr = new Date().toISOString().slice(0, 7); 
+      if (usageSnap.exists() && usageSnap.data().month === currentMonthStr) { setUsageCount(usageSnap.data().count || 0); } else { setUsageCount(0); }
+    } catch (e) { console.log("Usage tracking err."); }
+  };
 
   useEffect(() => {
     if (appMode === 'LANDING') return; 
     const unsubscribeAuth = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        setCurrentUser(user.email);
-        if (!user.emailVerified && user.email !== 'info@bizboost.gr' && user.email !== 'gdion77@gmail.com') { setAuthStatus('UNVERIFIED_EMAIL'); return; }
-        if (user.email === 'info@bizboost.gr' || user.email === 'gdion77@gmail.com') { setAuthStatus('AUTHORIZED'); setUserPlan('PRO'); return; }
-        
-        // 1. Check Admin collection first
-        try {
-          const adminDoc = await getDoc(doc(db, 'Admin', user.uid));
-          if (adminDoc.exists() && adminDoc.data().status === 'active') {
-            setAuthStatus('AUTHORIZED');
-            setUserPlan('PRO');
-            return; // Bypass Stripe check
-          }
-        } catch (e) {
-          console.log("Admin check err", e);
-        }
-
-        // 2. Proceed to Stripe check if not admin
-        const subRef = collection(db, 'customers', user.uid, 'subscriptions');
-        const q = query(subRef, where('status', 'in', ['tracking', 'active', 'trialing']));
-        onSnapshot(q, (snapshot) => {
-          if (!snapshot.empty) {
-            setAuthStatus('AUTHORIZED');
-            const subData = snapshot.docs[0].data();
-            setUserPlan((subData.role || 'basic').toLowerCase() === 'pro' ? 'PRO' : 'BASIC');
-          } else { setAuthStatus('PAYWALL'); }
-        });
-        try {
-          const usageDocRef = doc(db, 'user_usage', user.uid);
-          const usageSnap = await getDoc(usageDocRef);
-          const currentMonthStr = new Date().toISOString().slice(0, 7); 
-          if (usageSnap.exists() && usageSnap.data().month === currentMonthStr) { setUsageCount(usageSnap.data().count || 0); } else { setUsageCount(0); }
-        } catch (e) { console.log("Usage tracking err."); }
+        await checkUserAccess(user);
       } else { setCurrentUser(null); setAuthStatus('LOGIN'); }
     });
     return () => unsubscribeAuth();
@@ -480,17 +499,29 @@ export default function App() {
   useEffect(() => {
     const saveActiveProject = async () => {
       if (authStatus === 'AUTHORIZED' && auth.currentUser && activeProjectId) {
+        setSaveStatus('SAVING');
         try {
-          await setDoc(doc(db, 'projects', activeProjectId), {
+          const payload = {
             listA,
             listB,
             listC,
             listD,
             manualMatches,
             updatedAt: new Date().toISOString()
-          }, { merge: true });
+          };
+          
+          const payloadSize = new Blob([JSON.stringify(payload)]).size;
+          if (payloadSize > 900000) { // ~900KB
+            setSaveStatus('ERROR');
+            alert("Προσοχή: Ο φάκελος είναι πολύ μεγάλος (κοντά στο όριο του 1MB). Παρακαλώ διαγράψτε κάποιες εγγραφές ή σπάστε τον σε 2 φακέλους. Οι τελευταίες αλλαγές ΔΕΝ αποθηκεύτηκαν.");
+            return;
+          }
+          
+          await setDoc(doc(db, 'projects', activeProjectId), payload, { merge: true });
+          setSaveStatus('SAVED');
           console.log(`Saved project ${activeProjectId} to Firestore.`);
         } catch (err) {
+          setSaveStatus('ERROR');
           console.error("Error saving active project to Firestore:", err);
         }
       }
@@ -503,6 +534,34 @@ export default function App() {
   // Removed redundant local projects sync to prevent infinite loops. 
   // Firestore onSnapshot handles the projects array updates.
 
+  const handleAfmChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value.replace(/\D/g, '');
+    setRegisterAfm(val);
+    
+    if (requireInvoice && val.length === 9) {
+      setIsFetchingAfm(true);
+      try {
+        const response = await fetch(`/api/aade/afm/${val}`);
+        const data = await response.json();
+        
+        if (response.ok) {
+          setRegisterOfficeName(data.name || '');
+          setRegisterAddress(data.address || '');
+          setRegisterDoy(data.doy || '');
+          // We keep the user's profession selection or let them choose, 
+          // as AADE's 'commer_title' might not map perfectly to our dropdown options.
+        } else {
+          alert(`Σφάλμα ΑΑΔΕ: ${data.error}`);
+        }
+      } catch (err) {
+        console.error('Error fetching AFM:', err);
+        alert('Αποτυχία σύνδεσης με τον διακομιστή.');
+      } finally {
+        setIsFetchingAfm(false);
+      }
+    }
+  };
+
   const handleAuthAction = async (e: React.FormEvent) => {
     e.preventDefault(); setLoginError('');
     if (!isLoginMode && !acceptTerms) { setLoginError('Αποδεχτείτε τους Όρους Χρήσης.'); return; }
@@ -513,22 +572,40 @@ export default function App() {
       else {
         const userCredential = await createUserWithEmailAndPassword(auth, loginEmail, loginPassword);
         await sendEmailVerification(userCredential.user);
-        await setDoc(doc(db, 'users', userCredential.user.uid), { fullName: registerFullName, officeName: registerOfficeName, email: loginEmail, createdAt: new Date().toISOString() });
+        await setDoc(doc(db, 'users', userCredential.user.uid), { 
+          fullName: registerFullName, 
+          officeName: registerOfficeName, 
+          profession: registerProfession,
+          phone: registerPhone,
+          afm: registerAfm,
+          requireInvoice,
+          address: registerAddress,
+          doy: registerDoy,
+          email: loginEmail, 
+          createdAt: new Date().toISOString() 
+        });
       }
     } catch (error: any) { setLoginError('Σφάλμα σύνδεσης. Ελέγξτε τα στοιχεία σας.'); } finally { setIsLoggingIn(false); }
   };
 
-  const handleOAuthLogin = async (providerName: 'google' | 'microsoft') => {
+  const handleOAuthLogin = async () => {
     setLoginError('');
     try {
-      const provider = providerName === 'google' ? new GoogleAuthProvider() : new OAuthProvider('microsoft.com');
+      const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
       const userRef = doc(db, 'users', result.user.uid);
       const userSnap = await getDoc(userRef);
       if (!userSnap.exists()) {
         await setDoc(userRef, { fullName: result.user.displayName || '', officeName: '', email: result.user.email, createdAt: new Date().toISOString() });
       }
-    } catch (error: any) { setLoginError(`Σφάλμα σύνδεσης.`); }
+    } catch (error: any) { 
+      console.error(error);
+      if (error.code === 'auth/cancelled-popup-request' || error.code === 'auth/popup-closed-by-user') {
+        setLoginError('Η διαδικασία σύνδεσης ακυρώθηκε από τον χρήστη.');
+      } else {
+        setLoginError(`Σφάλμα σύνδεσης: ${error.message || 'Αποτυχία'}`); 
+      }
+    }
   };
 
   const calculatePasswordStrength = (password: string) => {
@@ -545,6 +622,23 @@ export default function App() {
   const strengthColors = ['bg-rose-500', 'bg-orange-500', 'bg-amber-400', 'bg-teal-500', 'bg-emerald-500'];
 
   const handleLogout = async () => { await signOut(auth); setLoginEmail(''); setLoginPassword(''); setCurrentView('DASHBOARD'); setAppMode('LANDING'); };
+  const handleCheckVerification = async () => {
+    setIsLoggingIn(true);
+    try {
+      if (auth.currentUser) {
+        await auth.currentUser.reload();
+        if (auth.currentUser.emailVerified) {
+          await checkUserAccess(auth.currentUser);
+        } else {
+          alert('Το email δεν έχει επιβεβαιωθεί ακόμα. Παρακαλώ ελέγξτε τα εισερχόμενά σας.');
+        }
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setIsLoggingIn(false);
+    }
+  };
   const handleResetPassword = async (e: React.FormEvent) => { e.preventDefault(); setIsResetting(true); setResetMessage(null); try { await sendPasswordResetEmail(auth, resetEmail); setResetMessage({ type: 'success', text: 'Ελέγξτε τα εισερχόμενά σας!' }); setResetEmail(''); } catch (error: any) { setResetMessage({ type: 'error', text: 'Σφάλμα.' }); } finally { setIsResetting(false); } };
   const handleChangePassword = async (e: React.FormEvent) => { e.preventDefault(); setSettingsMessage(null); if (newPassword !== confirmPassword) { setSettingsMessage({ type: 'error', text: 'Οι κωδικοί δεν ταιριάζουν.' }); return; } try { if (auth.currentUser) { await updatePassword(auth.currentUser, newPassword); setSettingsMessage({ type: 'success', text: 'Ο κωδικός σας άλλαξε!' }); setNewPassword(''); setConfirmPassword(''); } } catch (error: any) { setSettingsMessage({ type: 'error', text: 'Σφάλμα.' }); } };
 
@@ -554,6 +648,7 @@ export default function App() {
     if (newAfm.trim() && !/^\d{9}$/.test(newAfm.trim())) { setAfmError('Το ΑΦΜ πρέπει να έχει 9 ψηφία.'); return; }
     if (isCreatingCase) return;
     setIsCreatingCase(true);
+    setCreateError(null);
     console.log("Starting project creation...");
     try {
       // 1. Update usage (Safe block)
@@ -596,7 +691,10 @@ export default function App() {
             createdAt: new Date().toISOString()
           });
           console.log("Project saved to Firestore.");
-        } catch (fsErr) {
+        } catch (fsErr: any) {
+          if (fsErr.code === 'permission-denied' || (fsErr.message && fsErr.message.includes('permission'))) {
+             throw new Error("Δεν έχετε δικαίωμα δημιουργίας φακέλου. Παρακαλώ ελέγξτε τη σύνδεσή σας.");
+          }
           handleFirestoreError(fsErr, OperationType.WRITE, `projects/${projectId}`);
         }
       }
@@ -605,9 +703,24 @@ export default function App() {
       setNewFullName(''); setNewAfm(''); setNewOcwNumber(''); setAfmError(''); setIsModalOpen(false); 
       console.log("Opening project...");
       openProject(newProject); 
-    } catch (err) { 
+    } catch (err: any) { 
       console.error("Project creation error:", err);
-      alert("Παρουσιάστηκε σφάλμα κατά τη δημιουργία του φακέλου. Παρακαλώ δοκιμάστε ξανά."); 
+      let errorMessage = "Παρουσιάστηκε σφάλμα κατά τη δημιουργία του φακέλου. Παρακαλώ δοκιμάστε ξανά.";
+      if (err.message) {
+        try {
+          const parsed = JSON.parse(err.message);
+          if (parsed.error && parsed.error.includes('permission')) {
+             errorMessage = "Δεν έχετε δικαίωμα δημιουργίας φακέλου. Παρακαλώ ελέγξτε τη σύνδεσή σας.";
+          }
+        } catch (e) {
+          if (err.message.includes('permission')) {
+             errorMessage = "Δεν έχετε δικαίωμα δημιουργίας φακέλου. Παρακαλώ ελέγξτε τη σύνδεσή σας.";
+          } else {
+             errorMessage = err.message;
+          }
+        }
+      }
+      setCreateError(errorMessage);
     } finally { 
       setIsCreatingCase(false); 
       console.log("Project creation finished.");
@@ -907,10 +1020,14 @@ export default function App() {
     }
     
     setTimeout(() => {
-      if (type === 'A') setListA(prev => [...prev, ...allNewItems]); 
-      else if (type === 'B') setListB(prev => [...prev, ...allNewItems]); 
-      else if (type === 'C') setListC(prev => [...prev, ...allNewItems]); 
-      else setListD(prev => [...prev, ...allNewItems]);
+      if (allNewItems.length === 0) {
+        alert("Το αρχείο φαίνεται να είναι άδειο ή δεν βρέθηκαν έγκυρα δεδομένα.");
+      } else {
+        if (type === 'A') setListA(prev => [...prev, ...allNewItems]); 
+        else if (type === 'B') setListB(prev => [...prev, ...allNewItems]); 
+        else if (type === 'C') setListC(prev => [...prev, ...allNewItems]); 
+        else setListD(prev => [...prev, ...allNewItems]);
+      }
       
       setIsProcessing(false);
       if (e.target) e.target.value = ''; 
@@ -1140,6 +1257,89 @@ export default function App() {
           });
           bestMatch.bankCode = enc.assetCode;
           return;
+        }
+      }
+
+      // 2.5. Try to match against ALL properties (Third-party property / Ακίνητο Τρίτου)
+      if (isPropertyCategory) {
+        const allMatches = singularized.filter(s => 
+          s.asset.type !== 'OTHER_ASSET' && 
+          s.asset.type !== 'FINANCIAL_ASSET' &&
+          s.asset.type !== 'SPECIAL' &&
+          Number(s.globalCode) > 0 &&
+          String(s.asset.afm || s.asset.ownerName || '').trim() !== encAfm
+        );
+        
+        if (allMatches.length > 0) {
+          const addrMatches = allMatches.filter(s => {
+            const assetAddr = `${s.asset.description} ${s.asset.region}`;
+            return fuzzyMatchStrings(encAddr, assetAddr);
+          });
+
+          if (addrMatches.length > 0) {
+            let bestMatch: SingularizedAsset;
+            const belowOrEqual = addrMatches.filter(m => (m.asset.objectiveValue || 0) <= encVal);
+            
+            if (belowOrEqual.length > 0) {
+              bestMatch = belowOrEqual.reduce((prev, curr) => 
+                (curr.asset.objectiveValue || 0) > (prev.asset.objectiveValue || 0) ? curr : prev
+              );
+            } else {
+              bestMatch = addrMatches.reduce((prev, curr) => 
+                Math.abs((curr.asset.objectiveValue || 0) - encVal) < Math.abs((prev.asset.objectiveValue || 0) - encVal) ? curr : prev
+              );
+            }
+
+            const isExact = normalizePhonetic(encAddr) === normalizePhonetic(`${bestMatch.asset.description} ${bestMatch.asset.region}`);
+            const otherAfm = String(bestMatch.asset.afm || bestMatch.asset.ownerName || '').trim();
+            
+            const thirdPartyAsset: SingularizedAsset = {
+              asset: { 
+                id: `THIRD-PARTY-${enc.id}`, 
+                description: bestMatch.asset.description || '', 
+                afm: encAfm, 
+                ownerName: encAfm, 
+                region: bestMatch.asset.region || '', 
+                objectiveValue: encVal, 
+                ownershipPercentage: 0, 
+                atak: bestMatch.asset.atak, 
+                memberType: '', 
+                kaek: bestMatch.asset.kaek, 
+                type: 'PROPERTY' 
+              },
+              originalAssets: [{ 
+                id: `THIRD-PARTY-ORIG-${enc.id}`, 
+                description: bestMatch.asset.description || '', 
+                afm: encAfm, 
+                ownerName: encAfm, 
+                region: bestMatch.asset.region || '', 
+                objectiveValue: encVal, 
+                ownershipPercentage: 0, 
+                atak: bestMatch.asset.atak, 
+                memberType: '', 
+                kaek: bestMatch.asset.kaek, 
+                type: 'PROPERTY' 
+              }],
+              encumbrances: [{
+                ...enc,
+                isFuzzyMatch: !isExact,
+                matchReason: `Ακίνητο Τρίτου (Ταυτοποίηση με ΑΦΜ ${otherAfm})`
+              }],
+              collaterals: [],
+              liquidationValue: 0,
+              totalAssetValue: 0,
+              status: 'FREE',
+              alerts: [{ type: 'INFO', message: `Ακίνητο Τρίτου (ΑΦΜ ${otherAfm})` }],
+              globalCode: bestMatch.globalCode,
+              bankCode: enc.assetCode,
+              sharedWith: [],
+              totalGroupOwnership: 0,
+              matchReason: `Ακίνητο Τρίτου (Ταυτοποίηση με ΑΦΜ ${otherAfm})`
+            };
+            
+            singularized.push(thirdPartyAsset);
+            return;
+          }
         }
       }
 
@@ -1927,7 +2127,7 @@ export default function App() {
               </div>
               <div className="flex items-center gap-4">
                 <button onClick={() => setAppMode('APP')} className="text-xs font-black uppercase tracking-[0.15em] text-white hover:text-teal transition-colors hidden sm:block">Εισοδος</button>
-                <button onClick={() => setAppMode('APP')} className="bg-teal hover:bg-teal/80 text-white px-6 py-3 rounded-2xl text-[10px] font-black uppercase tracking-[0.15em] shadow-lg shadow-teal/20 transition-all transform hover:-translate-y-0.5 flex items-center gap-2">Ξεκινιστε τωρα <ChevronRight className="w-4 h-4" /></button>
+                <button onClick={() => setAppMode('APP')} className="bg-teal hover:bg-teal/80 text-white px-6 py-3 rounded-2xl text-[10px] font-black uppercase tracking-[0.15em] shadow-lg shadow-teal/20 transition-all transform hover:-translate-y-0.5 flex items-center gap-2">Ξεκινηστε τωρα <ChevronRight className="w-4 h-4" /></button>
               </div>
             </div>
           </nav>
@@ -1959,7 +2159,7 @@ export default function App() {
             <div className="max-w-7xl mx-auto px-6">
               <div className="text-center mb-16">
                 <h2 className="text-4xl md:text-5xl font-sans font-bold text-slate-900 mb-4">Το απαραίτητο εργαλείο για κάθε επαγγελματία</h2>
-                <p className="text-slate-600 font-medium max-w-2xl mx-auto text-lg">Σχεδιασμένο να καλύπτει τις αυξημένες απαιτήσεις του Εξωδικαστικού Μηχανισμού, προσφέροντας ταχύτητα, οργάνωση και απόλυτη νομική ακρίβεια.</p>
+                <p className="text-slate-600 font-medium max-w-2xl mx-auto text-lg">Σχεδιασμένο να καλύπτει τις αυξημένες απαιτήσεις του Εξωδικαστικού Μηχανισμού, προσφέροντας ταχύτητα και οργάνωση.</p>
               </div>
               
               <div className="grid md:grid-cols-3 gap-6">
@@ -2025,7 +2225,6 @@ export default function App() {
                   <h3 className="text-2xl font-bold text-slate-900 mb-6">Χειροκίνητη Επεξεργασία</h3>
                   <ul className="space-y-5">
                     {[
-                      "Ατελείωτες ώρες αντιγραφής δεδομένων από το Ε9.",
                       "Υψηλός κίνδυνος ανθρώπινου λάθους στην ταύτιση.",
                       "Δυσκολία στον υπολογισμό αξιών ρευστοποίησης.",
                       "Χρονοβόρα δημιουργία αναφορών και πινάκων.",
@@ -2061,20 +2260,7 @@ export default function App() {
                       </li>
                     ))}
                   </ul>
-                  <div className="mt-10 pt-8 border-t border-white/10">
-                    <div className="flex items-center gap-4">
-                      <div className="flex -space-x-2">
-                        {[1,2,3].map(i => (
-                          <div key={i} className="w-8 h-8 rounded-full border-2 border-[#0a1d37] bg-slate-700 overflow-hidden">
-                            <img src={`https://picsum.photos/seed/user${i}/100/100`} alt="user" referrerPolicy="no-referrer" />
-                          </div>
-                        ))}
-                      </div>
-                      <p className="text-xs text-slate-400 font-medium italic">
-                        Ήδη 150+ επαγγελματίες εμπιστεύονται το ExoMatch PRO
-                      </p>
-                    </div>
-                  </div>
+
                 </motion.div>
               </div>
             </div>
@@ -2134,14 +2320,58 @@ export default function App() {
                         <span className="text-xs text-slate-500 font-bold uppercase tracking-wider">Drop Claims Excel</span>
                       </div>
                     </div>
-                    <div className="bg-slate-50 rounded-2xl p-6 flex items-center justify-between border border-slate-200">
-                      <div>
-                        <p className="text-3xl font-bold text-slate-900">€145.200</p>
-                        <p className="text-[10px] text-teal font-black uppercase tracking-widest mt-1">Συνολικη Αξια</p>
-                      </div>
-                      <div className="w-12 h-12 bg-teal/20 rounded-full flex items-center justify-center text-teal glow-teal">
-                        <Check className="w-6 h-6" />
-                      </div>
+                    <div className="bg-white rounded-2xl p-4 border border-slate-200 overflow-x-auto shadow-sm">
+                      <table className="w-full text-left text-[10px] sm:text-xs border-collapse min-w-[500px]">
+                        <thead>
+                          <tr>
+                            <th className="px-3 pb-3 font-extrabold text-slate-500 uppercase tracking-wider border-b-2 border-slate-100">Match ID</th>
+                            <th className="px-3 pb-3 font-extrabold text-slate-500 uppercase tracking-wider border-b-2 border-slate-100">ΔΙΕΥΘΥΝΣΗ</th>
+                            <th className="px-3 pb-3 font-extrabold text-slate-500 uppercase tracking-wider border-b-2 border-slate-100 text-center">ΠΟΣΟΣΤΟ</th>
+                            <th className="px-3 pb-3 font-extrabold text-slate-500 uppercase tracking-wider border-b-2 border-slate-100">ΑΞΙΑ</th>
+                            <th className="px-3 pb-3 font-extrabold text-slate-500 uppercase tracking-wider border-b-2 border-slate-100">STATUS</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-50">
+                          <tr className="hover:bg-slate-50/80 transition-colors group">
+                            <td className="px-3 py-3 font-semibold text-slate-700">
+                              <span className="inline-flex w-8 h-8 rounded-xl bg-[#0a1d37] text-white items-center justify-center font-black text-xs shadow-md shadow-blue-900/20 group-hover:scale-110 transition-transform">1</span>
+                            </td>
+                            <td className="px-3 py-3 font-medium text-slate-800">
+                              ΚΑΛΛΙΘΕΑ, ΑΘΗΝΑ
+                            </td>
+                            <td className="px-3 py-3 font-bold text-slate-700 text-center">
+                              100%
+                            </td>
+                            <td className="px-3 py-3 font-bold text-slate-900">
+                              € 145.200
+                            </td>
+                            <td className="px-3 py-3">
+                              <span className="inline-flex items-center gap-1.5 px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-700 border border-emerald-200">
+                                <CheckCircle2 className="w-3 h-3" /> Ταυτίστηκε
+                              </span>
+                            </td>
+                          </tr>
+                          <tr className="hover:bg-slate-50/80 transition-colors group">
+                            <td className="px-3 py-3 font-semibold text-slate-700">
+                              <span className="inline-flex w-8 h-8 rounded-xl bg-[#0a1d37] text-white items-center justify-center font-black text-xs shadow-md shadow-blue-900/20 group-hover:scale-110 transition-transform">2</span>
+                            </td>
+                            <td className="px-3 py-3 font-medium text-slate-800">
+                              ΠΕΡΙΣΤΕΡΙ, ΑΘΗΝΑ
+                            </td>
+                            <td className="px-3 py-3 font-bold text-slate-700 text-center">
+                              50%
+                            </td>
+                            <td className="px-3 py-3 font-bold text-slate-900">
+                              € 85.000
+                            </td>
+                            <td className="px-3 py-3">
+                              <span className="inline-flex items-center gap-1.5 px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-700 border border-emerald-200">
+                                <CheckCircle2 className="w-3 h-3" /> Ταυτίστηκε
+                              </span>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
                     </div>
                     <div className="bg-teal hover:bg-teal/90 rounded-2xl p-4 flex justify-center cursor-pointer transition-all shadow-lg shadow-teal/20">
                       <span className="text-sm font-black text-white flex items-center gap-2 uppercase tracking-wider">
@@ -2167,7 +2397,7 @@ export default function App() {
                   <p className="text-slate-400 text-sm mb-6">Ιδανικό για μικρά γραφεία.</p>
                   <div className="mb-6"><span className="text-5xl font-black">19,90€</span><span className="text-slate-400">/μηνα</span></div>
                   <ul className="space-y-4 mb-8 flex-1 text-slate-300">
-                    <li className="flex items-center gap-3"><CheckCircle2 className="w-5 h-5 text-teal"/> <span>Έως <strong>10 υποθεσεις</strong> τον μηνα</span></li>
+                    <li className="flex items-center gap-3"><CheckCircle2 className="w-5 h-5 text-teal"/> <span>εως <strong>5 υποθέσεις</strong> τον μήνα</span></li>
                     <li className="flex items-center gap-3"><CheckCircle2 className="w-5 h-5 text-teal"/> <span>Αυτόματη ταύτιση Ε9 & Βαρών</span></li>
                     <li className="flex items-center gap-3"><CheckCircle2 className="w-5 h-5 text-teal"/> <span>Εξαγωγή PDF Αναφορών</span></li>
                     <li className="flex items-center gap-3"><CheckCircle2 className="w-5 h-5 text-teal"/> <span>100% GDPR Compliant</span></li>
@@ -2229,7 +2459,7 @@ export default function App() {
             </div>
             <div className="max-w-7xl mx-auto px-6 pt-8 border-t border-white/10 text-center flex flex-col items-center justify-center gap-2">
             <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">ΣΧΕΔΙΑΣΗ & ΑΝΑΠΤΥΞΗ: THE BIZBOOST BY G. DIONYSIOU</p>
-            <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">© 2024-2026 - THE BIZBOOST BY G. DIONYSIOU .</p>
+            <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">© 2024-2026 - THE BIZBOOST BY G. DIONYSIOU</p>
             </div>
           </footer>
         </div>
@@ -2256,13 +2486,9 @@ export default function App() {
               
               {authStatus !== 'RESET_PASSWORD' && (
                 <div className="mb-6 space-y-3">
-                    <button type="button" onClick={() => handleOAuthLogin('google')} className="w-full flex items-center justify-center gap-3 py-4 bg-white border border-slate-200 rounded-2xl hover:bg-slate-50 transition-all text-sm font-black uppercase tracking-widest text-slate-900 shadow-xl">
+                    <button type="button" onClick={handleOAuthLogin} className="w-full flex items-center justify-center gap-3 py-4 bg-white border border-slate-200 rounded-2xl hover:bg-slate-50 transition-all text-sm font-black uppercase tracking-widest text-slate-900 shadow-xl">
                       <Globe className="w-5 h-5 text-teal" />
-                      Σύνδεση με Google
-                    </button>
-                    <button type="button" onClick={() => handleOAuthLogin('microsoft')} className="w-full flex items-center justify-center gap-3 py-4 bg-white border border-slate-200 rounded-2xl hover:bg-slate-50 transition-all text-sm font-black uppercase tracking-widest text-slate-900 shadow-xl">
-                      <Globe className="w-5 h-5 text-blue-600" />
-                      Σύνδεση με Microsoft
+                      Συνδεση με Google
                     </button>
                   <div className="relative flex items-center py-4">
                     <div className="flex-grow border-t border-slate-200"></div>
@@ -2273,16 +2499,90 @@ export default function App() {
               )}
 
               {!isLoginMode && authStatus !== 'RESET_PASSWORD' && (
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-[10px] font-black text-teal uppercase tracking-widest mb-2">ΟΝΟΜΑΤΕΠΩΝΥΜΟ</label>
-                    <input type="text" required value={registerFullName} onChange={(e) => setRegisterFullName(e.target.value)} placeholder="Γιώργος Παππάς" className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-teal/50 text-sm text-slate-900 placeholder:text-slate-400 transition-all" />
+                <>
+                  <div className="mb-4 p-4 bg-blue-50/50 border border-blue-100 rounded-xl">
+                    <label className="flex items-center gap-3 cursor-pointer">
+                      <input 
+                        type="checkbox" 
+                        checked={requireInvoice} 
+                        onChange={(e) => setRequireInvoice(e.target.checked)}
+                        className="w-5 h-5 text-teal-600 rounded border-slate-300 focus:ring-teal-500"
+                      />
+                      <span className="text-sm font-bold text-blue-900">Επιθυμώ έκδοση Τιμολογίου</span>
+                    </label>
+                    {requireInvoice && (
+                      <p className="mt-2 text-xs text-slate-500">
+                        Συμπληρώστε το ΑΦΜ σας παρακάτω και τα στοιχεία σας θα συμπληρωθούν αυτόματα.
+                      </p>
+                    )}
                   </div>
-                  <div>
-                    <label className="block text-[10px] font-black text-teal uppercase tracking-widest mb-2">ΕΠΩΝΥΜΙΑ ΓΡΑΦΕΙΟΥ</label>
-                    <input type="text" required value={registerOfficeName} onChange={(e) => setRegisterOfficeName(e.target.value)} placeholder="Pappas Law Firm" className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-teal/50 text-sm text-slate-900 placeholder:text-slate-400 transition-all" />
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-[10px] font-black text-teal uppercase tracking-widest mb-2">ΟΝΟΜΑΤΕΠΩΝΥΜΟ</label>
+                      <input type="text" required value={registerFullName} onChange={(e) => setRegisterFullName(e.target.value)} placeholder="Γιώργος Παππάς" className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-teal/50 text-sm text-slate-900 placeholder:text-slate-400 transition-all" />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-black text-teal uppercase tracking-widest mb-2">
+                        {requireInvoice ? 'ΑΦΜ (ΥΠΟΧΡΕΩΤΙΚΟ)' : 'ΑΦΜ (ΠΡΟΑΙΡΕΤΙΚΟ)'}
+                      </label>
+                      <div className="relative">
+                        <input 
+                          type="text" 
+                          required={requireInvoice}
+                          maxLength={9}
+                          value={registerAfm} 
+                          onChange={handleAfmChange} 
+                          placeholder="012345678" 
+                          className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-teal/50 text-sm text-slate-900 placeholder:text-slate-400 transition-all" 
+                        />
+                        {isFetchingAfm && (
+                          <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                            <Loader2 className="w-5 h-5 animate-spin text-teal-600" />
+                          </div>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                </div>
+                  
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+                    <div className="sm:col-span-2">
+                      <label className="block text-[10px] font-black text-teal uppercase tracking-widest mb-2">ΕΠΩΝΥΜΙΑ ΕΠΙΧΕΙΡΗΣΗΣ / ΓΡΑΦΕΙΟΥ</label>
+                      <input type="text" required value={registerOfficeName} onChange={(e) => setRegisterOfficeName(e.target.value)} placeholder="Pappas Law Firm" className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-teal/50 text-sm text-slate-900 placeholder:text-slate-400 transition-all" />
+                    </div>
+                    
+                    {requireInvoice && (
+                      <>
+                        <div>
+                          <label className="block text-[10px] font-black text-teal uppercase tracking-widest mb-2">ΔΙΕΥΘΥΝΣΗ ΕΔΡΑΣ</label>
+                          <input type="text" required value={registerAddress} onChange={(e) => setRegisterAddress(e.target.value)} placeholder="Οδός, Αριθμός, ΤΚ, Πόλη" className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-teal/50 text-sm text-slate-900 placeholder:text-slate-400 transition-all" />
+                        </div>
+                        <div>
+                          <label className="block text-[10px] font-black text-teal uppercase tracking-widest mb-2">Δ.Ο.Υ.</label>
+                          <input type="text" required value={registerDoy} onChange={(e) => setRegisterDoy(e.target.value)} placeholder="π.χ. Α' ΑΘΗΝΩΝ" className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-teal/50 text-sm text-slate-900 placeholder:text-slate-400 transition-all" />
+                        </div>
+                      </>
+                    )}
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+                    <div>
+                      <label className="block text-[10px] font-black text-teal uppercase tracking-widest mb-2">ΕΙΔΙΚΟΤΗΤΑ</label>
+                      <select required value={registerProfession} onChange={(e) => setRegisterProfession(e.target.value)} className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-teal/50 text-sm text-slate-900 transition-all">
+                        <option value="" disabled>Επιλέξτε...</option>
+                        <option value="Δικηγόρος">Δικηγόρος</option>
+                        <option value="Λογιστής / Φοροτεχνικός">Λογιστής / Φοροτεχνικός</option>
+                        <option value="Αναλογιστής">Αναλογιστής</option>
+                        <option value="Σύμβουλος Επιχειρήσεων">Σύμβουλος Επιχειρήσεων</option>
+                        <option value="Άλλο">Άλλο</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-black text-teal uppercase tracking-widest mb-2">ΤΗΛΕΦΩΝΟ</label>
+                      <input type="tel" required value={registerPhone} onChange={(e) => setRegisterPhone(e.target.value)} placeholder="210..." className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-teal/50 text-sm text-slate-900 placeholder:text-slate-400 transition-all" />
+                    </div>
+                  </div>
+                </>
               )}
 
               <div>
@@ -2351,7 +2651,7 @@ export default function App() {
           </div>
           <div className="mt-12 text-center relative z-10 flex flex-col items-center justify-center gap-2">
             <p className="text-[10px] text-slate-600 font-bold uppercase tracking-widest">ΣΧΕΔΙΑΣΗ & ΑΝΑΠΤΥΞΗ: THE BIZBOOST BY G. DIONYSIOU</p>
-            <p className="text-[10px] text-slate-600 font-bold uppercase tracking-widest">© 2024-2026 - THE BIZBOOST BY G. DIONYSIOU .</p>
+            <p className="text-[10px] text-slate-600 font-bold uppercase tracking-widest">© 2024-2026 - THE BIZBOOST BY G. DIONYSIOU</p>
           </div>
         </div>
       )}
@@ -2369,8 +2669,12 @@ export default function App() {
               Έχουμε στείλει ένα email επιβεβαίωσης στο <strong className="text-teal">{currentUser}</strong>. 
               Παρακαλούμε ελέγξτε τα εισερχόμενά σας και κάντε κλικ στο σύνδεσμο για να ενεργοποιήσετε τον λογαριασμό σας.
             </p>
-            <button onClick={() => window.location.reload()} className="w-full py-4 text-sm font-black uppercase tracking-widest text-[#050b18] bg-teal hover:bg-teal/90 rounded-2xl shadow-lg shadow-teal/20 mb-6 transition-all">
-              Εχω κανει επιβεβαιωση
+            <button 
+              onClick={handleCheckVerification} 
+              disabled={isLoggingIn}
+              className="w-full py-4 text-sm font-black uppercase tracking-widest text-[#050b18] bg-teal hover:bg-teal/90 rounded-2xl shadow-lg shadow-teal/20 mb-6 transition-all flex items-center justify-center gap-2"
+            >
+              {isLoggingIn ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Εχω κανει επιβεβαιωση'}
             </button>
             <button onClick={handleLogout} className="text-xs font-bold text-slate-500 hover:text-teal transition-colors uppercase tracking-widest">
               Αποσυνδεση
@@ -2378,7 +2682,7 @@ export default function App() {
           </div>
           <div className="mt-12 text-center relative z-10 flex flex-col items-center justify-center gap-2">
             <p className="text-[10px] text-slate-600 font-bold uppercase tracking-widest">ΣΧΕΔΙΑΣΗ & ΑΝΑΠΤΥΞΗ: THE BIZBOOST BY G. DIONYSIOU</p>
-            <p className="text-[10px] text-slate-600 font-bold uppercase tracking-widest">© 2024-2026 - THE BIZBOOST BY G. DIONYSIOU .</p>
+            <p className="text-[10px] text-slate-600 font-bold uppercase tracking-widest">© 2024-2026 - THE BIZBOOST BY G. DIONYSIOU</p>
           </div>
         </div>
       )}
@@ -2391,15 +2695,29 @@ export default function App() {
     <ExoMatchLogo className="h-24 mx-auto mb-8" />
     <h2 className="text-4xl font-sans font-bold text-white mb-4">Ενεργοποίηση Συνδρομής</h2>
     
+    {window !== window.top && (
+      <div className="mb-8 bg-rose-500/10 border border-rose-500/50 rounded-2xl p-4 flex items-start gap-3 text-left">
+        <AlertCircle className="w-6 h-6 text-rose-400 shrink-0 mt-0.5" />
+        <div>
+          <h4 className="text-rose-400 font-bold text-sm mb-1">Προσοχή: Εκτελείτε την εφαρμογή σε προεπισκόπηση (iframe)</h4>
+          <p className="text-rose-300/80 text-xs leading-relaxed">
+            Το Stripe δεν επιτρέπει πληρωμές μέσα σε iframe για λόγους ασφαλείας. Το κουμπί πληρωμής ενδέχεται να μην λειτουργεί. 
+            Παρακαλώ <strong>ανοίξτε την εφαρμογή σε νέα καρτέλα</strong> για να προχωρήσετε στην πληρωμή.
+          </p>
+        </div>
+      </div>
+    )}
+
     <p className="text-slate-400 font-medium mb-12 bg-white/5 inline-block px-8 py-3 rounded-full border border-white/10 shadow-inner">
-      Επιλέξτε το <strong className="text-white">Basic (Έως 10 υποθέσεις/μήνα)</strong> ή το <strong className="text-teal">Pro (Απεριόριστες)</strong>.
+      Επιλέξτε το <strong className="text-white">Basic (εως 5 υποθέσεις/μήνα)</strong> ή το <strong className="text-teal">Pro (Απεριόριστες)</strong>.
     </p>
 
     <div className="w-full min-h-[500px] bg-white rounded-[2rem] p-4 shadow-2xl">
-      {/* @ts-ignore */}
       <stripe-pricing-table
         pricing-table-id={import.meta.env.VITE_STRIPE_PRICING_TABLE_ID || ""}
         publishable-key={import.meta.env.VITE_STRIPE_PUBLIC_KEY || ""}
+        client-reference-id={auth.currentUser?.uid || ""}
+        customer-email={auth.currentUser?.email || ""}
       >
       </stripe-pricing-table>
     </div>
@@ -2410,7 +2728,7 @@ export default function App() {
           </div>
           <div className="mt-12 text-center relative z-10 flex flex-col items-center justify-center gap-2">
             <p className="text-[10px] text-slate-600 font-bold uppercase tracking-widest">ΣΧΕΔΙΑΣΗ & ΑΝΑΠΤΥΞΗ: THE BIZBOOST BY G. DIONYSIOU</p>
-            <p className="text-[10px] text-slate-600 font-bold uppercase tracking-widest">© 2024-2026 - THE BIZBOOST BY G. DIONYSIOU .</p>
+            <p className="text-[10px] text-slate-600 font-bold uppercase tracking-widest">© 2024-2026 - THE BIZBOOST BY G. DIONYSIOU</p>
           </div>
         </div>
       )}
@@ -2438,11 +2756,32 @@ export default function App() {
                     </div>
                     <div><label className="block text-xs font-bold text-blue-900 uppercase tracking-wide mb-2">ΑΡ. ΑΙΤΗΣΗΣ</label><input type="text" value={newOcwNumber} onChange={(e) => setNewOcwNumber(e.target.value)} placeholder="π.χ. ΑΙΤ-2026-891" className="w-full px-4 py-3 bg-white/60 backdrop-blur-sm border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500/50 text-sm font-mono text-blue-950" /></div>
                   </div>
+                  {createError && (
+                    <div className="p-3 bg-rose-50 border border-rose-200 rounded-xl text-rose-600 text-sm font-medium">
+                      {createError}
+                    </div>
+                  )}
                   <div className="pt-4 border-t border-slate-100 flex justify-end gap-3">
                     <button type="button" onClick={() => setIsModalOpen(false)} className="px-5 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-200/50 rounded-xl transition-colors">Ακύρωση</button>
-                    <button type="submit" disabled={!newFullName.trim() || isCreatingCase} className="px-6 py-2.5 text-sm font-semibold text-white bg-teal-600 hover:bg-teal-700 disabled:opacity-50 rounded-xl shadow-md flex items-center gap-2">
-                      {isCreatingCase ? <Loader2 className="w-4 h-4 animate-spin"/> : null} Δημιουργία
-                    </button>
+                    {(!newFullName.trim() || isCreatingCase) ? (
+                      <button 
+                        type="button" 
+                        disabled 
+                        className="px-6 py-2.5 text-sm font-semibold rounded-xl flex items-center gap-2 cursor-not-allowed opacity-60"
+                        style={{ backgroundColor: '#e2e8f0', color: '#475569' }}
+                      >
+                        {isCreatingCase && <Loader2 className="w-4 h-4 animate-spin" style={{ color: '#475569' }} />}
+                        <span style={{ color: '#475569' }}>Δημιουργία</span>
+                      </button>
+                    ) : (
+                      <button 
+                        type="submit" 
+                        className="px-6 py-2.5 text-sm font-semibold rounded-xl flex items-center gap-2 shadow-md transition-all hover:opacity-90"
+                        style={{ backgroundColor: '#0d9488', color: '#ffffff' }}
+                      >
+                        <span style={{ color: '#ffffff' }}>Δημιουργία</span>
+                      </button>
+                    )}
                   </div>
                 </form>
               </div>
@@ -2466,7 +2805,7 @@ export default function App() {
               <button onClick={() => setCurrentView('DASHBOARD')} className={`w-full flex items-center gap-3 px-4 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all ${currentView === 'DASHBOARD' ? 'bg-[#0a1d37] text-white shadow-xl shadow-blue-900/20' : 'text-slate-600 hover:bg-blue-50/80'}`}><LayoutDashboard className="w-4 h-4" /> {t.dashboard}</button>
               <button onClick={() => setCurrentView('TUTORIAL')} className={`w-full flex items-center gap-3 px-4 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all ${currentView === 'TUTORIAL' ? 'bg-[#0a1d37] text-white shadow-xl shadow-blue-900/20' : 'text-slate-600 hover:bg-blue-50/80'}`}><BookOpen className="w-4 h-4" /> {t.tutorial}</button>
               <button onClick={() => setCurrentView('SETTINGS')} className={`w-full flex items-center gap-3 px-4 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all ${currentView === 'SETTINGS' ? 'bg-[#0a1d37] text-white shadow-xl shadow-blue-900/20' : 'text-slate-600 hover:bg-blue-50/80'}`}><Settings className="w-4 h-4" /> {t.settings}</button>
-              <a href="https://billing.stripe.com/p/login/00w28sa6H8b48YI60O9k400" target="_blank" rel="noopener noreferrer" className="w-full flex items-center gap-3 px-4 py-4 text-slate-600 hover:bg-blue-50/80 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all"><CreditCard className="w-4 h-4" /> {t.subscription}</a>
+              <a href="https://billing.stripe.com/p/login/00w28sa6H8b48YI6O09k400" target="_blank" rel="noopener noreferrer" className="w-full flex items-center gap-3 px-4 py-4 text-slate-600 hover:bg-blue-50/80 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all"><CreditCard className="w-4 h-4" /> {t.subscription}</a>
             </nav>
             <div className="pt-4 border-t border-slate-200/50">
               <div className="flex items-center justify-between px-2">
@@ -2494,8 +2833,8 @@ export default function App() {
                       </div>
                     )}
                     <button onClick={() => {
-                        if (currentUser !== 'info@bizboost.gr' && userPlan === 'BASIC' && usageCount >= 10) {
-                           alert("Έχετε φτάσει το μηνιαίο όριο των 10 υποθέσεων του Basic πλάνου.\n\nΠαρακαλώ αναβαθμίστε σε PRO από το μενού 'Συνδρομή'.");
+                        if (currentUser !== 'info@bizboost.gr' && userPlan === 'BASIC' && usageCount >= 5) {
+                           alert("Έχετε φτάσει το μηνιαίο όριο των 5 υποθέσεων του Basic πλάνου.\n\nΠαρακαλώ αναβαθμίστε σε PRO από το μενού 'Συνδρομή'.");
                         } else { setIsModalOpen(true); }
                     }} className="bg-teal-600 hover:bg-teal-700 text-white px-6 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest flex items-center gap-2 shadow-xl shadow-teal-600/20 transition-all transform hover:-translate-y-1"><Plus className="w-5 h-5" /> {t.newCase}</button>
                   </div>
@@ -2656,7 +2995,7 @@ export default function App() {
             )}
             <div className="mt-12 text-center relative z-10 flex flex-col items-center justify-center gap-2">
               <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">ΣΧΕΔΙΑΣΗ & ΑΝΑΠΤΥΞΗ: THE BIZBOOST BY G. DIONYSIOU</p>
-              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">© 2024-2026 - THE BIZBOOST BY G. DIONYSIOU .</p>
+              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">© 2024-2026 - THE BIZBOOST BY G. DIONYSIOU</p>
             </div>
           </main>
         </div>
@@ -2674,6 +3013,9 @@ export default function App() {
                 <div className="flex items-center gap-2 mb-1">
                   <span className="px-2.5 py-0.5 bg-teal/20 text-teal-200 text-[10px] uppercase font-extrabold tracking-wider rounded-md border border-teal-500/30">{t.activeProject}</span>
                   <h2 className="text-xl font-extrabold text-white tracking-tight">{activeProject?.fullName}</h2>
+                  {saveStatus === 'SAVING' && <span className="ml-2 text-[10px] text-slate-400 flex items-center gap-1"><Loader2 className="w-3 h-3 animate-spin"/> Αποθήκευση...</span>}
+                  {saveStatus === 'ERROR' && <span className="ml-2 text-[10px] text-rose-400 flex items-center gap-1" title="Σφάλμα αποθήκευσης"><AlertCircle className="w-3 h-3"/> Εκτός Σύνδεσης</span>}
+                  {saveStatus === 'SAVED' && <span className="ml-2 text-[10px] text-emerald-400 flex items-center gap-1"><CheckCircle2 className="w-3 h-3"/> Αποθηκεύτηκε</span>}
                 </div>
               </div>
             </div>
@@ -3163,7 +3505,7 @@ export default function App() {
 
             <div className="mt-12 text-center relative z-10 flex flex-col items-center justify-center gap-2">
               <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">ΣΧΕΔΙΑΣΗ & ΑΝΑΠΤΥΞΗ: THE BIZBOOST BY G. DIONYSIOU</p>
-              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">© 2024-2026 - THE BIZBOOST BY G. DIONYSIOU .</p>
+              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">© 2024-2026 - THE BIZBOOST BY G. DIONYSIOU</p>
             </div>
           </main>
 
