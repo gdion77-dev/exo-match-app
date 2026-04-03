@@ -2159,7 +2159,7 @@ export default function App() {
                   </p>
                   <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                     <button onClick={() => setAppMode('APP')} className="w-full sm:w-auto bg-[#0a1d37] hover:bg-[#0a1d37]/90 text-white px-10 py-5 rounded-2xl text-lg font-black uppercase tracking-widest shadow-2xl shadow-blue-900/30 transition-all transform hover:-translate-y-1 flex items-center justify-center gap-2">ΔΗΜΙΟΥΡΓΙΑ ΛΟΓΑΡΙΑΣΜΟΥ</button>
-                    <button onClick={() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })} className="w-full sm:w-auto bg-[#0a1d37] hover:bg-[#0a1d37]/90 text-white px-10 py-5 rounded-2xl text-lg font-black uppercase tracking-widest transition-all shadow-xl transform hover:-translate-y-1">ΠΩΣ ΛΕΙΤΟΥΡΓΕΙ</button>
+                    <a href="#how-it-works" className="w-full sm:w-auto bg-[#0a1d37] hover:bg-[#0a1d37]/90 text-white px-10 py-5 rounded-2xl text-lg font-black uppercase tracking-widest transition-all shadow-xl transform hover:-translate-y-1 flex items-center justify-center">ΠΩΣ ΛΕΙΤΟΥΡΓΕΙ</a>
                   </div>
                 </motion.div>
               </div>
@@ -2169,7 +2169,7 @@ export default function App() {
           <section className="py-24 relative z-10 border-y border-slate-200">
             <div className="max-w-7xl mx-auto px-6">
               <div className="text-center mb-16">
-                <h2 className="text-4xl md:text-5xl font-sans font-bold text-slate-900 mb-4">Το απαραίτητο εργαλείο για κάθε επαγγελματία</h2>
+                <h1 className="text-4xl md:text-5xl font-sans font-bold text-slate-900 mb-4">Το απαραίτητο εργαλείο για κάθε επαγγελματία</h1>
                 <p className="text-slate-600 font-medium max-w-2xl mx-auto text-lg">Σχεδιασμένο να καλύπτει τις αυξημένες απαιτήσεις του Εξωδικαστικού Μηχανισμού, προσφέροντας ταχύτητα και οργάνωση.</p>
               </div>
               
