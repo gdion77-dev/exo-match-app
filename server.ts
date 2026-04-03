@@ -5,8 +5,18 @@ import { parseStringPromise, processors } from 'xml2js';
 import path from 'path';
 import dotenv from 'dotenv';
 import Stripe from 'stripe';
+import helmet from 'helmet';
+import { rateLimit } from 'express-rate-limit';
+import admin from 'firebase-admin';
 
 dotenv.config();
+
+// Initialize Firebase Admin
+if (!admin.apps.length) {
+  admin.initializeApp({
+    projectId: process.env.VITE_FIREBASE_PROJECT_ID,
+  });
+}
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
   apiVersion: '2023-10-16' as any,
@@ -15,6 +25,20 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
 async function startServer() {
   const app = express();
   const PORT = 3000;
+
+  // Security Middlewares
+  app.use(helmet({
+    contentSecurityPolicy: false, // Disable CSP for development/Vite compatibility
+    crossOriginEmbedderPolicy: false,
+  }));
+
+  const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // Limit each IP to 100 requests per windowMs
+    standardHeaders: true,
+    legacyHeaders: false,
+  });
+  app.use('/api/', limiter);
 
   // Stripe Webhook MUST be before express.json() to get the raw body
   app.post('/api/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
@@ -60,7 +84,6 @@ async function startServer() {
         });
       } catch (error) {
         console.error('Failed to issue invoice in Prosvasis:', error);
-        // Note: You might want to save this to a database to retry later
       }
     }
 
@@ -68,6 +91,24 @@ async function startServer() {
   });
 
   app.use(express.json());
+
+  // Auth Middleware for API routes
+  const authenticate = async (req: any, res: any, next: any) => {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    const idToken = authHeader.split('Bearer ')[1];
+    try {
+      const decodedToken = await admin.auth().verifyIdToken(idToken);
+      req.user = decodedToken;
+      next();
+    } catch (error) {
+      console.error('Error verifying Firebase ID token:', error);
+      res.status(401).json({ error: 'Unauthorized' });
+    }
+  };
 
   // Prosvasis Run Integration Function
   async function issueProsvasisInvoice(data: { email?: string | null, name?: string | null, amount: number, stripeSessionId: string, taxId?: string, postalCode?: string | null }) {
@@ -97,7 +138,6 @@ async function startServer() {
       let trdr = null;
 
       // ΒΗΜΑ 1: Εύρεση ή Δημιουργία Πελάτη
-      // Αν υπάρχει ΑΦΜ, ψάχνουμε τον πελάτη
       if (data.taxId) {
         const searchRes = await axios.post(`${baseUrl}/list/customer`, {
           appId: appId,
@@ -106,12 +146,10 @@ async function startServer() {
         }, { headers });
 
         if (searchRes.data && searchRes.data.success && searchRes.data.rows && searchRes.data.rows.length > 0) {
-          // Το TRDR είναι το εσωτερικό ID του πελάτη στο SoftOne
           trdr = searchRes.data.rows[0].TRDR;
         }
       }
 
-      // Αν δεν βρέθηκε ή δεν υπάρχει ΑΦΜ (Λιανική), δημιουργούμε νέο πελάτη
       if (!trdr) {
         const customerData: any = {
           NAME: data.name || 'Πελάτης Λιανικής',
@@ -137,12 +175,9 @@ async function startServer() {
         }
       }
 
-      // ΒΗΜΑ 2: Έλεγχος Ταχυδρομικού Κώδικα για Μειωμένο ΦΠΑ (17%)
-      // Νησιά Αιγαίου: Λέσβος, Χίος, Σάμος, Κως, Λέρος κλπ.
       const isReducedVat = (tk: string | null | undefined) => {
         if (!tk) return false;
         const cleanTk = tk.replace(/\s/g, '');
-        // Προθέματα ΤΚ για περιοχές με μειωμένο ΦΠΑ
         const reducedPrefixes = ['811', '812', '813', '814', '821', '822', '823', '831', '832', '853', '854'];
         return reducedPrefixes.some(prefix => cleanTk.startsWith(prefix));
       };
@@ -152,15 +187,10 @@ async function startServer() {
       const vatCode = hasReducedVat ? '1170' : '1410';
       const itemCode = hasReducedVat ? '0000008' : '0000007';
 
-      // Υπολογισμός Καθαρής Αξίας
-      // Το data.amount είναι το τελικό (με ΦΠΑ). Πρέπει να βρούμε το καθαρό.
       const netAmount = data.amount / (1 + (vatPercent / 100));
-
-      // Αν υπάρχει ΑΦΜ (taxId), κόβουμε Τιμολόγιο. Αλλιώς Απόδειξη.
       const isInvoice = !!data.taxId;
       const documentSeries = isInvoice ? seriesTIM : seriesAL;
 
-      // ΒΗΜΑ 3: Δημιουργία Παραστατικού (SALDOC)
       const invoicePayload = {
         appId: appId,
         token: password,
@@ -198,8 +228,8 @@ async function startServer() {
     }
   }
 
-  // AADE API Route
-  app.get('/api/aade/afm/:afm', async (req, res) => {
+  // AADE API Route - SECURED
+  app.get('/api/aade/afm/:afm', authenticate, async (req: any, res: any) => {
     const { afm } = req.params;
     const username = process.env.AADE_USERNAME;
     const password = process.env.AADE_PASSWORD;
@@ -262,7 +292,6 @@ async function startServer() {
       const errorRec = rtType.error_rec;
       
       if (errorRec && errorRec.error_code) {
-         // Some XML parsers might return an empty object {} if the tag is empty
          if (typeof errorRec.error_code === 'string' && errorRec.error_code.trim() !== '') {
             return res.status(400).json({ error: errorRec.error_descr });
          }
