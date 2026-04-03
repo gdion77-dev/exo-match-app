@@ -5,18 +5,8 @@ import { parseStringPromise, processors } from 'xml2js';
 import path from 'path';
 import dotenv from 'dotenv';
 import Stripe from 'stripe';
-import helmet from 'helmet';
-import { rateLimit } from 'express-rate-limit';
-import admin from 'firebase-admin';
 
 dotenv.config();
-
-// Initialize Firebase Admin
-if (!admin.apps.length) {
-  admin.initializeApp({
-    projectId: process.env.VITE_FIREBASE_PROJECT_ID,
-  });
-}
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
   apiVersion: '2023-10-16' as any,
@@ -25,20 +15,6 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
 async function startServer() {
   const app = express();
   const PORT = 3000;
-
-  // Security Middlewares
-  app.use(helmet({
-    contentSecurityPolicy: false, // Disable CSP for development/Vite compatibility
-    crossOriginEmbedderPolicy: false,
-  }));
-
-  const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100, // Limit each IP to 100 requests per windowMs
-    standardHeaders: true,
-    legacyHeaders: false,
-  });
-  app.use('/api/', limiter);
 
   // Stripe Webhook MUST be before express.json() to get the raw body
   app.post('/api/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
@@ -91,24 +67,6 @@ async function startServer() {
   });
 
   app.use(express.json());
-
-  // Auth Middleware for API routes
-  const authenticate = async (req: any, res: any, next: any) => {
-    const authHeader = req.headers.authorization;
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return res.status(401).json({ error: 'Unauthorized' });
-    }
-
-    const idToken = authHeader.split('Bearer ')[1];
-    try {
-      const decodedToken = await admin.auth().verifyIdToken(idToken);
-      req.user = decodedToken;
-      next();
-    } catch (error) {
-      console.error('Error verifying Firebase ID token:', error);
-      res.status(401).json({ error: 'Unauthorized' });
-    }
-  };
 
   // Prosvasis Run Integration Function
   async function issueProsvasisInvoice(data: { email?: string | null, name?: string | null, amount: number, stripeSessionId: string, taxId?: string, postalCode?: string | null }) {
@@ -228,8 +186,8 @@ async function startServer() {
     }
   }
 
-  // AADE API Route - SECURED
-  app.get('/api/aade/afm/:afm', authenticate, async (req: any, res: any) => {
+  // AADE API Route
+  app.get('/api/aade/afm/:afm', async (req: any, res: any) => {
     const { afm } = req.params;
     const username = process.env.AADE_USERNAME;
     const password = process.env.AADE_PASSWORD;
