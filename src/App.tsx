@@ -541,7 +541,12 @@ export default function App() {
     if (requireInvoice && val.length === 9) {
       setIsFetchingAfm(true);
       try {
-        const response = await fetch(`/api/aade/afm/${val}`);
+        const idToken = await auth.currentUser?.getIdToken();
+        const response = await fetch(`/api/aade/afm/${val}`, {
+          headers: {
+            'Authorization': `Bearer ${idToken}`
+          }
+        });
         const data = await response.json();
         
         if (response.ok) {
@@ -585,7 +590,18 @@ export default function App() {
           createdAt: new Date().toISOString() 
         });
       }
-    } catch (error: any) { setLoginError('Σφάλμα σύνδεσης. Ελέγξτε τα στοιχεία σας.'); } finally { setIsLoggingIn(false); }
+    } catch (error: any) { 
+      console.error(error);
+      if (error.code === 'auth/email-already-in-use') {
+        setLoginError('Αυτό το email χρησιμοποιείται ήδη. Παρακαλώ κάντε Είσοδο.');
+      } else if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
+        setLoginError('Λάθος email ή κωδικός πρόσβασης.');
+      } else if (error.code === 'auth/weak-password') {
+        setLoginError('Ο κωδικός πρέπει να έχει τουλάχιστον 6 χαρακτήρες.');
+      } else {
+        setLoginError('Σφάλμα σύνδεσης. Ελέγξτε τα στοιχεία σας.'); 
+      }
+    } finally { setIsLoggingIn(false); }
   };
 
   const handleOAuthLogin = async () => {
@@ -2168,7 +2184,7 @@ export default function App() {
                   <div className="flex flex-col md:flex-row gap-8 items-center">
                     <div className="w-full md:w-1/2 h-64 overflow-hidden rounded-3xl bg-slate-100 relative">
                       <div className="absolute inset-0 bg-gradient-to-t from-white/20 to-transparent z-10 pointer-events-none"></div>
-                      <img src={dikigorosImg} alt="Δικηγόρος" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
+                      <img src={dikigorosImg} alt="Δικηγόρος" referrerPolicy="no-referrer" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
                     </div>
                     <div className="flex-1 text-left">
                       <div className="w-12 h-12 rounded-2xl bg-teal/20 flex items-center justify-center text-teal mb-6"><Scale className="w-6 h-6"/></div>
@@ -2182,7 +2198,7 @@ export default function App() {
                 <motion.div whileHover={{ y: -5 }} className="glass-card-light rounded-[2.5rem] p-8 group transition-all flex flex-col">
                   <div className="w-full h-48 mb-6 overflow-hidden rounded-3xl bg-slate-100 relative">
                     <div className="absolute inset-0 bg-gradient-to-t from-white/20 to-transparent z-10 pointer-events-none"></div>
-                    <img src={logistisImg} alt="Λογιστής" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
+                    <img src={logistisImg} alt="Λογιστής" referrerPolicy="no-referrer" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
                   </div>
                   <h3 className="text-2xl font-sans font-bold text-slate-900 mb-3">Λογιστές & Φοροτεχνικοί</h3>
                   <p className="text-slate-600 text-sm leading-relaxed">Τέλος στα ατελείωτα, χειροκίνητα Excel. Ταυτίστε τα στοιχεία του Ε9 με τα βάρη των Funds αυτόματα και χωρίς απολύτως κανένα περιθώριο λάθους.</p>
@@ -2193,7 +2209,7 @@ export default function App() {
                   <div className="flex flex-col md:flex-row-reverse gap-8 items-center">
                     <div className="w-full md:w-1/3 h-64 overflow-hidden rounded-3xl bg-slate-100 relative">
                       <div className="absolute inset-0 bg-gradient-to-t from-white/20 to-transparent z-10 pointer-events-none"></div>
-                      <img src={symvoulosImg} alt="Σύμβουλος" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
+                      <img src={symvoulosImg} alt="Σύμβουλος" referrerPolicy="no-referrer" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
                     </div>
                     <div className="flex-1 text-left">
                       <div className="w-12 h-12 rounded-2xl bg-blue-500/20 flex items-center justify-center text-blue-600 mb-6"><Landmark className="w-6 h-6"/></div>
@@ -2805,7 +2821,7 @@ export default function App() {
               <button onClick={() => setCurrentView('DASHBOARD')} className={`w-full flex items-center gap-3 px-4 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all ${currentView === 'DASHBOARD' ? 'bg-[#0a1d37] text-white shadow-xl shadow-blue-900/20' : 'text-slate-600 hover:bg-blue-50/80'}`}><LayoutDashboard className="w-4 h-4" /> {t.dashboard}</button>
               <button onClick={() => setCurrentView('TUTORIAL')} className={`w-full flex items-center gap-3 px-4 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all ${currentView === 'TUTORIAL' ? 'bg-[#0a1d37] text-white shadow-xl shadow-blue-900/20' : 'text-slate-600 hover:bg-blue-50/80'}`}><BookOpen className="w-4 h-4" /> {t.tutorial}</button>
               <button onClick={() => setCurrentView('SETTINGS')} className={`w-full flex items-center gap-3 px-4 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all ${currentView === 'SETTINGS' ? 'bg-[#0a1d37] text-white shadow-xl shadow-blue-900/20' : 'text-slate-600 hover:bg-blue-50/80'}`}><Settings className="w-4 h-4" /> {t.settings}</button>
-              <a href="https://billing.stripe.com/p/login/00w28sa6H8b48YI60O9k400" target="_blank" rel="noopener noreferrer" className="w-full flex items-center gap-3 px-4 py-4 text-slate-600 hover:bg-blue-50/80 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all"><CreditCard className="w-4 h-4" /> {t.subscription}</a>
+              <a href="https://billing.stripe.com/p/login/00w28sa6H8b48YI6O09k400" target="_blank" rel="noopener noreferrer" className="w-full flex items-center gap-3 px-4 py-4 text-slate-600 hover:bg-blue-50/80 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all"><CreditCard className="w-4 h-4" /> {t.subscription}</a>
             </nav>
             <div className="pt-4 border-t border-slate-200/50">
               <div className="flex items-center justify-between px-2">
