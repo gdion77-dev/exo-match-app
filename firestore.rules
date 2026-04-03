@@ -54,16 +54,25 @@ service cloud.firestore {
     }
 
     function isValidUser(data) {
-      return data.keys().hasOnly(['fullName', 'officeName', 'profession', 'phone', 'afm', 'email', 'role', 'createdAt']) &&
+      return data.keys().hasOnly(['fullName', 'officeName', 'profession', 'phone', 'afm', 'email', 'role', 'createdAt', 'requireInvoice', 'address', 'doy']) &&
              data.email is string && isValidEmail(data.email) &&
              (!('role' in data) || data.role in ['admin', 'user']) &&
-             data.fullName is string && data.fullName.size() < 100;
+             (!('fullName' in data) || (data.fullName is string && data.fullName.size() < 100)) &&
+             (!('officeName' in data) || (data.officeName is string && data.officeName.size() < 150)) &&
+             (!('profession' in data) || (data.profession is string && data.profession.size() < 100)) &&
+             (!('phone' in data) || (data.phone is string && data.phone.size() < 20)) &&
+             (!('afm' in data) || (data.afm is string && data.afm.size() < 20)) &&
+             (!('address' in data) || (data.address is string && data.address.size() < 255)) &&
+             (!('doy' in data) || (data.doy is string && data.doy.size() < 100));
     }
 
     function isValidProject(data, res) {
       return data.keys().hasAll(['fullName', 'ownerUid']) &&
              (data.ownerUid == request.auth.uid || (res != null && data.ownerUid == res.data.ownerUid && isAdmin())) &&
-             data.fullName is string && data.fullName.size() > 0 && data.fullName.size() < 200;
+             data.fullName is string && data.fullName.size() > 0 && data.fullName.size() < 200 &&
+             (!('afm' in data) || (data.afm is string && data.afm.size() < 20)) &&
+             (!('ocwNumber' in data) || (data.ocwNumber is string && data.ocwNumber.size() < 50)) &&
+             (!('date' in data) || (data.date is string && data.date.size() < 50));
     }
 
     // ===============================================================
