@@ -541,12 +541,7 @@ export default function App() {
     if (requireInvoice && val.length === 9) {
       setIsFetchingAfm(true);
       try {
-        const idToken = await auth.currentUser?.getIdToken();
-        const response = await fetch(`/api/aade/afm/${val}`, {
-          headers: {
-            'Authorization': `Bearer ${idToken}`
-          }
-        });
+        const response = await fetch(`/api/aade/afm/${val}`);
         const data = await response.json();
         
         if (response.ok) {
@@ -2184,7 +2179,7 @@ export default function App() {
                   <div className="flex flex-col md:flex-row gap-8 items-center">
                     <div className="w-full md:w-1/2 h-64 overflow-hidden rounded-3xl bg-slate-100 relative">
                       <div className="absolute inset-0 bg-gradient-to-t from-white/20 to-transparent z-10 pointer-events-none"></div>
-                      <img src={dikigorosImg} alt="Δικηγόρος" referrerPolicy="no-referrer" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
+                      <img src={dikigorosImg} alt="Δικηγόρος" loading="lazy" referrerPolicy="no-referrer" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
                     </div>
                     <div className="flex-1 text-left">
                       <div className="w-12 h-12 rounded-2xl bg-teal/20 flex items-center justify-center text-teal mb-6"><Scale className="w-6 h-6"/></div>
@@ -2198,7 +2193,7 @@ export default function App() {
                 <motion.div whileHover={{ y: -5 }} className="glass-card-light rounded-[2.5rem] p-8 group transition-all flex flex-col">
                   <div className="w-full h-48 mb-6 overflow-hidden rounded-3xl bg-slate-100 relative">
                     <div className="absolute inset-0 bg-gradient-to-t from-white/20 to-transparent z-10 pointer-events-none"></div>
-                    <img src={logistisImg} alt="Λογιστής" referrerPolicy="no-referrer" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
+                    <img src={logistisImg} alt="Λογιστής" loading="lazy" referrerPolicy="no-referrer" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
                   </div>
                   <h3 className="text-2xl font-sans font-bold text-slate-900 mb-3">Λογιστές & Φοροτεχνικοί</h3>
                   <p className="text-slate-600 text-sm leading-relaxed">Τέλος στα ατελείωτα, χειροκίνητα Excel. Ταυτίστε τα στοιχεία του Ε9 με τα βάρη των Funds αυτόματα και χωρίς απολύτως κανένα περιθώριο λάθους.</p>
@@ -2209,7 +2204,7 @@ export default function App() {
                   <div className="flex flex-col md:flex-row-reverse gap-8 items-center">
                     <div className="w-full md:w-1/3 h-64 overflow-hidden rounded-3xl bg-slate-100 relative">
                       <div className="absolute inset-0 bg-gradient-to-t from-white/20 to-transparent z-10 pointer-events-none"></div>
-                      <img src={symvoulosImg} alt="Σύμβουλος" referrerPolicy="no-referrer" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
+                      <img src={symvoulosImg} alt="Σύμβουλος" loading="lazy" referrerPolicy="no-referrer" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
                     </div>
                     <div className="flex-1 text-left">
                       <div className="w-12 h-12 rounded-2xl bg-blue-500/20 flex items-center justify-center text-blue-600 mb-6"><Landmark className="w-6 h-6"/></div>
