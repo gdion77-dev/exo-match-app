@@ -2169,7 +2169,7 @@ export default function App() {
           <section className="py-24 relative z-10 border-y border-slate-200">
             <div className="max-w-7xl mx-auto px-6">
               <div className="text-center mb-16">
-                <h1 className="text-4xl md:text-5xl font-sans font-bold text-slate-900 mb-4">Το απαραίτητο εργαλείο για κάθε επαγγελματία</h1>
+                <h2 className="text-4xl md:text-5xl font-sans font-bold text-slate-900 mb-4">Το απαραίτητο εργαλείο για κάθε επαγγελματία</h2>
                 <p className="text-slate-600 font-medium max-w-2xl mx-auto text-lg">Σχεδιασμένο να καλύπτει τις αυξημένες απαιτήσεις του Εξωδικαστικού Μηχανισμού, προσφέροντας ταχύτητα και οργάνωση.</p>
               </div>
               
