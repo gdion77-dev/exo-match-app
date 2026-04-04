@@ -7,9 +7,13 @@
     
     <!-- SEO Meta Tags -->
     <title>ExoMatch PRO: Εξωδικαστικός & Μοναδικοποίηση</title>
-    <meta name="description" content="Κορυφαίο λογισμικό για τον Εξωδικαστικό Μηχανισμό. Αυτοματοποιήστε την ταύτιση βαρών και τη μοναδικοποίηση περιουσίας με το ExoMatch PRO." />
-    <meta name="keywords" content="Εξωδικαστικός Μηχανισμός, μοναδικοποίηση περιουσίας, ταύτιση βαρών, ακίνητα, ExoMatch PRO, δικηγόροι, λογιστές, σύμβουλοι" />
+    <meta name="description" content="Το ExoMatch PRO (EXOSuite Pro) είναι το κορυφαίο Legal Tech λογισμικό για τον Εξωδικαστικό Μηχανισμό. Αυτοματοποιήστε την ταύτιση βαρών και τη μοναδικοποίηση περιουσίας." />
+    <meta name="keywords" content="Εξωδικαστικός Μηχανισμός, Legal Tech, Δικηγόροι, Λογιστές, EXOSuite Pro, ExoMatch PRO, μοναδικοποίηση περιουσίας, ταύτιση βαρών, ακίνητα, σύμβουλοι" />
     <meta name="author" content="The BizBoost by G. Dionysiou" />
+    
+    <!-- Security Headers -->
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
@@ -40,16 +44,27 @@
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      "name": "ExoMatch PRO",
-      "operatingSystem": "Web",
-      "applicationCategory": "BusinessApplication",
-      "author": {
-        "@type": "Organization",
-        "name": "BizBoost by G. Dionysiou"
-      },
-      "description": "Κορυφαίο λογισμικό για τον Εξωδικαστικό Μηχανισμό. Αυτοματοποιήστε την ταύτιση βαρών και τη μοναδικοποίηση περιουσίας με το ExoMatch PRO.",
-      "url": "https://match.exosuite.gr/"
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://match.exosuite.gr/#organization",
+          "name": "The BizBoost by G. Dionysiou",
+          "url": "https://www.bizboost.gr",
+          "logo": "https://match.exosuite.gr/og-image.png"
+        },
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://match.exosuite.gr/#software",
+          "name": "ExoMatch PRO",
+          "applicationCategory": "BusinessApplication",
+          "operatingSystem": "Web",
+          "url": "https://match.exosuite.gr/",
+          "author": {
+            "@id": "https://match.exosuite.gr/#organization"
+          },
+          "description": "Το ExoMatch PRO (EXOSuite Pro) είναι το κορυφαίο Legal Tech λογισμικό για τον Εξωδικαστικό Μηχανισμό. Αυτοματοποιήστε την ταύτιση βαρών και τη μοναδικοποίηση περιουσίας."
+        }
+      ]
     }
     </script>
   </head>
