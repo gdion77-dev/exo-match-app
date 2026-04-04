@@ -2151,8 +2151,7 @@ export default function App() {
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="max-w-4xl">
                   <span className="inline-flex items-center gap-2 py-1.5 px-4 rounded-full bg-teal/10 text-teal text-xs font-bold uppercase tracking-wider mb-6 border border-teal/20 glow-teal"><Scale className="w-4 h-4"/> Για Δικηγορους, Λογιστες & Συμβουλους</span>
                   <h1 className="text-5xl md:text-8xl font-sans font-black text-slate-900 tracking-tight leading-[1] mb-8">
-                    Εξωδικαστικός Μηχανισμός:<br/>Μοναδικοποίηση Περιουσίας <br/>
-                    <span className="text-teal text-glow-teal">σε δευτερόλεπτα.</span>
+                    ExoMatch PRO: Λογισμικό Εξωδικαστικού Μηχανισμού & Μοναδικοποίησης Περιουσίας
                   </h1>
                   <p className="text-lg md:text-2xl text-slate-800 mb-10 max-w-3xl mx-auto leading-relaxed font-medium">
                     Το απόλυτο και πλέον εξειδικευμένο λογισμικό για την μοναδικοποίηση ακινήτων και βαρών. Ανεβάστε τα αρχεία Excel ακίνητης περιουσίας και τα Excel βαρών των Funds/Τραπεζών. Ο έξυπνος αλγόριθμος αναλαμβάνει την ταύτιση, την κωδικοποίηση και τον υπολογισμό αξιών ρευστοποίησης.
