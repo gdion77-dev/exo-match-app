@@ -50,6 +50,7 @@ import symvoulosImg from './symvoulos.jpg';
 
 const ExoMatchSVGLogo = ({ className = "h-24 w-auto", theme = "dark" }: { className?: string, theme?: "light" | "dark" }) => (
   <svg 
+    aria-hidden="true"
     viewBox="0 0 420 120" 
     xmlns="http://www.w3.org/2000/svg"
     className={className}
@@ -85,7 +86,7 @@ const ExoMatchSVGLogo = ({ className = "h-24 w-auto", theme = "dark" }: { classN
 );
 
 const LOGO_SVG_STRING = `
-<svg width="420" height="120" viewBox="0 0 420 120" xmlns="http://www.w3.org/2000/svg">
+<svg width="420" height="120" viewBox="0 0 420 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <defs>
         <linearGradient id="gradMatchL" x1="0" y1="0" x2="1" y2="1">
             <stop offset="0%" stop-color="#006373"/>
@@ -114,7 +115,7 @@ const LOGO_SVG_STRING = `
 `;
 
 const LOGO_SVG_STRING_LIGHT = `
-<svg width="420" height="120" viewBox="0 0 420 120" xmlns="http://www.w3.org/2000/svg">
+<svg width="420" height="120" viewBox="0 0 420 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <defs>
         <linearGradient id="gradMatchL" x1="0" y1="0" x2="1" y2="1">
             <stop offset="0%" stop-color="#006373"/>
@@ -2086,7 +2087,7 @@ export default function App() {
                     {legalModal === 'PRIVACY' && "Πολιτική Απορρήτου"}
                     {legalModal === 'DPA' && "Σύμβαση Επεξεργασίας"}
                  </h3>
-                 <button onClick={() => setLegalModal('NONE')} className="text-slate-400 hover:text-slate-900 p-2 transition-colors"><X className="w-6 h-6" /></button>
+                 <button onClick={() => setLegalModal('NONE')} aria-label="Κλείσιμο παραθύρου" className="text-slate-400 hover:text-slate-900 p-2 transition-colors"><X className="w-6 h-6" /></button>
               </div>
               <div className="p-8 md:p-10 overflow-y-auto flex-1 text-slate-600 space-y-6 text-sm leading-relaxed font-medium">
                  {legalModal === 'TOS' && (
@@ -2450,7 +2451,7 @@ export default function App() {
                 <p className="text-sm text-slate-400 font-medium leading-relaxed">Το κορυφαίο λογισμικό μοναδικοποίησης περιουσίας και βαρών, σχεδιασμένο ειδικά για επαγγελματίες του Εξωδικαστικού Μηχανισμού.</p>
               </div>
               <div>
-                <h4 className="font-sans font-bold text-white mb-6 text-lg uppercase tracking-wider">ΕΠΙΚΟΙΝΩΝΙΑ</h4>
+                <h3 className="font-sans font-bold text-white mb-6 text-lg uppercase tracking-wider">ΕΠΙΚΟΙΝΩΝΙΑ</h3>
                 <ul className="space-y-4 text-sm text-slate-400 font-medium">
                   <li className="flex items-center gap-3"><MapPin className="w-4 h-4 text-teal"/> Δ/νση: Αγίου Νικολάου 1, Σάμος 83100</li>
                   <li className="flex items-center gap-3"><Phone className="w-4 h-4 text-teal"/> 2273081618</li>
@@ -2459,7 +2460,7 @@ export default function App() {
                 </ul>
               </div>
               <div>
-                <h4 className="font-sans font-bold text-white mb-6 text-lg uppercase tracking-wider">ΝΟΜΙΚΑ ΕΓΓΡΑΦΑ</h4>
+                <h3 className="font-sans font-bold text-white mb-6 text-lg uppercase tracking-wider">ΝΟΜΙΚΑ ΕΓΓΡΑΦΑ</h3>
                 <ul className="space-y-4 text-sm text-white font-bold">
                   <li><button onClick={() => setLegalModal('TOS')} className="hover:text-teal transition-colors flex items-center gap-2 uppercase tracking-wider"><ChevronRight className="w-3 h-3 text-teal"/> ΟΡΟΙ ΧΡΗΣΗΣ (TOS)</button></li>
                   <li><button onClick={() => setLegalModal('PRIVACY')} className="hover:text-teal transition-colors flex items-center gap-2 uppercase tracking-wider"><ChevronRight className="w-3 h-3 text-teal"/> ΠΟΛΙΤΙΚΗ ΑΠΟΡΡΗΤΟΥ</button></li>
@@ -2754,7 +2755,7 @@ export default function App() {
               <div className="bg-white/90 backdrop-blur-xl rounded-2xl shadow-2xl w-full max-w-lg relative z-10 overflow-hidden border border-blue-200 p-8">
                 <div className="flex justify-between items-center mb-6 bg-blue-50/50 p-4 rounded-xl -mt-4 -mx-4 border-b border-blue-100">
                   <div className="flex items-center gap-3"><div className="w-8 h-8 rounded-lg bg-blue-100 text-blue-900 flex items-center justify-center"><FolderOpen className="w-4 h-4" /></div><h3 className="font-bold text-lg text-blue-950 tracking-tight">{t.newCase}</h3></div>
-                  <button onClick={() => setIsModalOpen(false)} className="text-slate-400 hover:text-blue-900 hover:bg-blue-100 p-2 rounded-lg transition-colors"><X className="w-5 h-5" /></button>
+                  <button onClick={() => setIsModalOpen(false)} aria-label="Κλείσιμο παραθύρου" className="text-slate-400 hover:text-blue-900 hover:bg-blue-100 p-2 rounded-lg transition-colors"><X className="w-5 h-5" aria-hidden="true" /></button>
                 </div>
                 <form onSubmit={handleCreateProject} className="space-y-5">
                   <div><label className="block text-xs font-bold text-blue-900 uppercase tracking-wide mb-2">ΟΝΟΜΑΤΕΠΩΝΥΜΟ ΟΦΕΙΛΕΤΗ <span className="text-rose-500">*</span></label><input type="text" autoFocus required value={newFullName} onChange={(e) => setNewFullName(e.target.value)} placeholder="π.χ. Παπαδόπουλος Ιωάννης" className="w-full px-4 py-3 bg-white/60 backdrop-blur-sm border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500/50 text-blue-950 font-medium" /></div>
@@ -2820,7 +2821,7 @@ export default function App() {
             <div className="pt-4 border-t border-slate-200/50">
               <div className="flex items-center justify-between px-2">
                 <div className="flex items-center gap-2"><div className="w-8 h-8 rounded-full bg-blue-100/80 text-blue-900 flex items-center justify-center font-bold text-xs uppercase">{currentUser?.substring(0, 2)}</div><div className="overflow-hidden"><p className="text-[10px] uppercase font-bold text-blue-800">{userPlan === 'PRO' ? 'PRO PLAN' : 'BASIC PLAN'}</p><p className="text-xs font-semibold text-blue-950 truncate w-32">{currentUser}</p></div></div>
-                <button onClick={handleLogout} className="text-slate-400 hover:text-rose-500"><LogOut className="w-4 h-4" /></button>
+                <button onClick={handleLogout} aria-label="Αποσύνδεση" className="text-slate-400 hover:text-rose-500"><LogOut className="w-4 h-4" aria-hidden="true" /></button>
               </div>
             </div>
           </aside>
@@ -2830,7 +2831,7 @@ export default function App() {
               <>
                 <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-4">
                   <div>
-                    <h2 className="text-3xl font-extrabold text-blue-950 tracking-tight mb-2">{t.myCases}</h2>
+                    <h1 className="text-3xl font-extrabold text-blue-950 tracking-tight mb-2">{t.myCases}</h1>
                     <p className="text-slate-500 font-medium text-sm">Διαχειριστείτε τους φακέλους των πελατών σας και δημιουργήστε νέους.</p>
                   </div>
                   <div className="flex items-center gap-4">
@@ -2894,8 +2895,8 @@ export default function App() {
                             <div className="flex items-center gap-1 text-teal-600 font-bold text-sm opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-2 group-hover:translate-x-0 duration-300 whitespace-nowrap">
                               Άνοιγμα <ChevronRight className="w-4 h-4" />
                             </div>
-                            <button onClick={(e) => { e.stopPropagation(); setProjectToDelete(project.id); }} className="p-2 bg-slate-50 text-slate-400 hover:bg-rose-50 hover:text-rose-600 rounded-lg transition-all z-10 opacity-0 group-hover:opacity-100" title={lang === 'EL' ? "Διαγραφή" : "Delete"}>
-                              <Trash2 className="w-4 h-4" />
+                            <button onClick={(e) => { e.stopPropagation(); setProjectToDelete(project.id); }} aria-label="Διαγραφή φακέλου" className="p-2 bg-slate-50 text-slate-400 hover:bg-rose-50 hover:text-rose-600 rounded-lg transition-all z-10 opacity-0 group-hover:opacity-100" title={lang === 'EL' ? "Διαγραφή" : "Delete"}>
+                              <Trash2 className="w-4 h-4" aria-hidden="true" />
                             </button>
                           </div>
                         </div>
@@ -2911,8 +2912,8 @@ export default function App() {
                              <div className="w-14 h-14 bg-gradient-to-br from-blue-50 to-blue-100/50 text-blue-900 rounded-2xl flex items-center justify-center shadow-sm border border-blue-100/50 group-hover:scale-110 transition-transform duration-300">
                                <FolderOpen className="w-6 h-6" />
                              </div>
-                             <button onClick={(e) => { e.stopPropagation(); setProjectToDelete(project.id); }} className="p-2.5 bg-slate-50 text-slate-400 hover:bg-rose-50 hover:text-rose-600 rounded-xl transition-all z-10 opacity-0 group-hover:opacity-100" title={lang === 'EL' ? "Διαγραφή" : "Delete"}>
-                               <Trash2 className="w-4 h-4" />
+                             <button onClick={(e) => { e.stopPropagation(); setProjectToDelete(project.id); }} aria-label="Διαγραφή φακέλου" className="p-2.5 bg-slate-50 text-slate-400 hover:bg-rose-50 hover:text-rose-600 rounded-xl transition-all z-10 opacity-0 group-hover:opacity-100" title={lang === 'EL' ? "Διαγραφή" : "Delete"}>
+                               <Trash2 className="w-4 h-4" aria-hidden="true" />
                              </button>
                            </div>
                            
@@ -2946,8 +2947,8 @@ export default function App() {
             {currentView === 'TUTORIAL' && (
                <div className="max-w-4xl mx-auto">
                   <header className="mb-10 text-center">
-                    <div className="w-16 h-16 bg-blue-100 text-blue-900 rounded-2xl flex items-center justify-center mx-auto mb-6"><BookOpen className="w-8 h-8" /></div>
-                    <h2 className="text-3xl font-bold text-blue-950 tracking-tight">Πώς λειτουργεί το ExoMatch PRO;</h2>
+                    <div className="w-16 h-16 bg-blue-100 text-blue-900 rounded-2xl flex items-center justify-center mx-auto mb-6"><BookOpen className="w-8 h-8" aria-hidden="true" /></div>
+                    <h1 className="text-3xl font-bold text-blue-950 tracking-tight">Πώς λειτουργεί το ExoMatch PRO;</h1>
                     <p className="text-slate-500 mt-3 text-lg">Οδηγός βήμα-προς-βήμα για τη γρήγορη και ακριβή μοναδικοποίηση περιουσίας.</p>
                   </header>
                   <div className="space-y-8">
@@ -2974,11 +2975,11 @@ export default function App() {
             {currentView === 'SETTINGS' && (
                <div className="max-w-2xl bg-white/80 backdrop-blur-md rounded-3xl shadow-sm border border-blue-100 overflow-hidden">
                   <div className="p-8 border-b border-slate-200/50">
-                      <h3 className="text-lg font-bold text-blue-950 mb-4">Προφίλ Χρήστη</h3>
+                      <h1 className="text-lg font-bold text-blue-950 mb-4">Προφίλ Χρήστη</h1>
                       <div className="flex items-center gap-4"><div className="w-16 h-16 rounded-2xl bg-blue-100/80 text-blue-900 flex items-center justify-center font-bold text-xl uppercase shadow-inner">{currentUser?.substring(0, 2)}</div><div><p className="text-xs font-bold text-slate-400 uppercase tracking-wide mb-1">Email Συνδεσης</p><p className="text-lg font-semibold text-blue-950">{currentUser}</p></div></div>
                    </div>
                    <div className="p-8 border-b border-slate-200/50">
-                      <h3 className="text-lg font-bold text-blue-950 mb-6 flex items-center gap-2"><LayoutDashboard className="w-5 h-5 text-blue-900"/> Προτιμήσεις Εμφάνισης</h3>
+                      <h2 className="text-lg font-bold text-blue-950 mb-6 flex items-center gap-2"><LayoutDashboard className="w-5 h-5 text-blue-900" aria-hidden="true"/> Προτιμήσεις Εμφάνισης</h2>
                       <div className="flex items-center justify-between bg-white/60 p-4 rounded-xl border border-blue-100">
                         <div>
                           <p className="font-bold text-blue-950 text-sm">Προβολή Υποθέσεων</p>
@@ -2991,7 +2992,7 @@ export default function App() {
                       </div>
                    </div>
                    <div className="p-8 bg-blue-50/40">
-                     <h3 className="text-lg font-bold text-blue-950 mb-6 flex items-center gap-2"><KeyRound className="w-5 h-5 text-blue-900"/> Αλλαγή Κωδικού Πρόσβασης</h3>
+                     <h2 className="text-lg font-bold text-blue-950 mb-6 flex items-center gap-2"><KeyRound className="w-5 h-5 text-blue-900" aria-hidden="true"/> Αλλαγή Κωδικού Πρόσβασης</h2>
                      <form onSubmit={handleChangePassword} className="space-y-4">
                         {settingsMessage && <div className={`p-4 rounded-xl text-sm font-medium ${settingsMessage.type === 'success' ? 'bg-emerald-50/80 text-emerald-700 border border-emerald-200' : 'bg-rose-50/80 text-rose-700 border border-rose-200'}`}>{settingsMessage.text}</div>}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -3018,11 +3019,11 @@ export default function App() {
           
           <header className="bg-[#0a1d37] border-b border-white/10 px-6 py-4 flex justify-between items-center sticky top-0 z-30 shadow-sm relative">
             <div className="flex items-center gap-5">
-              <button onClick={goToDashboard} className="p-2.5 bg-white/10 hover:bg-white/20 rounded-xl text-white transition-colors shadow-sm border border-white/10"><ChevronLeft className="w-5 h-5" /></button>
+              <button onClick={goToDashboard} aria-label="Επιστροφή στον Πίνακα Ελέγχου" className="p-2.5 bg-white/10 hover:bg-white/20 rounded-xl text-white transition-colors shadow-sm border border-white/10"><ChevronLeft className="w-5 h-5" /></button>
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <span className="px-2.5 py-0.5 bg-teal/20 text-teal-200 text-[10px] uppercase font-extrabold tracking-wider rounded-md border border-teal-500/30">{t.activeProject}</span>
-                  <h2 className="text-xl font-extrabold text-white tracking-tight">{activeProject?.fullName}</h2>
+                  <h1 className="text-xl font-extrabold text-white tracking-tight">{activeProject?.fullName}</h1>
                   {saveStatus === 'SAVING' && <span className="ml-2 text-[10px] text-slate-400 flex items-center gap-1"><Loader2 className="w-3 h-3 animate-spin"/> Αποθήκευση...</span>}
                   {saveStatus === 'ERROR' && <span className="ml-2 text-[10px] text-rose-400 flex items-center gap-1" title="Σφάλμα αποθήκευσης"><AlertCircle className="w-3 h-3"/> Εκτός Σύνδεσης</span>}
                   {saveStatus === 'SAVED' && <span className="ml-2 text-[10px] text-emerald-400 flex items-center gap-1"><CheckCircle2 className="w-3 h-3"/> Αποθηκεύτηκε</span>}
@@ -3552,7 +3553,7 @@ export default function App() {
                       <Link2 className="text-teal-600 w-6 h-6"/>
                       Χειροκίνητη Ταύτιση Βάρους
                     </h3>
-                    <button onClick={() => setEncToMatch(null)} className="text-slate-400 hover:text-blue-900 p-1"><X className="w-6 h-6" /></button>
+                    <button onClick={() => setEncToMatch(null)} aria-label="Κλείσιμο παραθύρου" className="text-slate-400 hover:text-blue-900 p-1"><X className="w-6 h-6" aria-hidden="true" /></button>
                   </div>
                   <div className="p-6 bg-slate-50 border-b border-slate-200">
                     <p className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">ΣΤΟΙΧΕΙΑ ΒΑΡΟΥΣ ΠΡΟΣ ΤΑΥΤΙΣΗ</p>
@@ -3616,7 +3617,7 @@ export default function App() {
                         {activeStatModal === 'UNIQUE_ASSETS' && t.uniqueAssets}
                       </h3>
                     </div>
-                    <button onClick={() => setActiveStatModal('NONE')} className="p-2 hover:bg-slate-200/50 rounded-full transition-colors text-slate-500"><X className="w-5 h-5" /></button>
+                    <button onClick={() => setActiveStatModal('NONE')} aria-label="Κλείσιμο παραθύρου" className="p-2 hover:bg-slate-200/50 rounded-full transition-colors text-slate-500"><X className="w-5 h-5" aria-hidden="true" /></button>
                   </div>
                   <div className="p-6 overflow-y-auto flex-1">
                     {activeStatModal === 'ORPHANS' && (
